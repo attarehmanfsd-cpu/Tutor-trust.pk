@@ -1,0 +1,110 @@
+﻿TutorTrust PK
+Complete Antigravity Prompt Sequence â€” Analysis Through Day 11
+How to use this document: each block below is one complete prompt, in the order you should give them to Google Antigravity. Select all the text inside a prompt's box (it is a single block, so a simple select-all-within-cell works cleanly), copy it, and paste it into Antigravity's prompt box. Wait for each phase to finish and for Antigravity to confirm before moving to the next prompt â€” do not queue several at once. Prompts are in English (Antigravity works in English); Rules.md separately instructs Antigravity to reply to you in Roman Urdu.
+Each prompt below applies the same underlying discipline: clear step-by-step instructions, an explicit self-check or test-before-reporting-done step (a generate-then-evaluate loop), and permission to say "I'm not sure" rather than guess â€” this mirrors Anthropic's own published prompt-engineering guidance for agentic coding tasks.
+Prompt 0 â€” 
+Analyze the Project Package (Run This First)
+You are about to build "TutorTrust PK," a verified home-tutor marketplace web app for Pakistan with escrow-protected payments. Before writing any code, do the following, in order:
+
+1. Read all nine files in this project's root folder: PRD.md, TRD.md, AppFlow.md, Design.md, Schema.md, ImplementationPlan.md, Rules.md, Tracker.md, CHANGELOG.md.
+2. Summarize back to me, in plain text, in Roman Urdu (per Rules.md Section 1): the core problem this app solves, the tech stack, and the 11-day build sequence from ImplementationPlan.md.
+3. List anything in these files that seems ambiguous, contradictory, or missing before you would be able to build Day 1 with confidence. If you are uncertain about something rather than confident, say so explicitly and ask me â€” do not guess or silently fill a gap.
+4. Do not write any application code in this step. This is an analysis and confirmation step only.
+5. Confirm you understand Rules.md Section 1 (communicate with me only in Roman Urdu, plain text, no visual walkthroughs) and Section 2-3 (maximize what you handle autonomously; keep Tracker.md and CHANGELOG.md updated yourself).
+
+Wait for my confirmation before proceeding to the Day 1 setup prompt.
+Prompt 1 â€” 
+Day 1 â€” Setup
+Begin Day 1 (Setup) of ImplementationPlan.md for TutorTrust PK.
+
+Your task, step by step:
+1. Scaffold a new React + TypeScript project using Vite. Install and configure Tailwind CSS per Design.md.
+2. Initialize a Git repository in this project if one does not already exist, and connect it to my GitHub repository at: https://github.com/attarehmanfsd-cpu/Tutor-trust.pk
+3. Create the Firebase configuration file at src/firebase/config.ts, reading keys from environment variables (I will supply the actual values in a .env file). Use these variable names: VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_PROJECT_ID, VITE_FIREBASE_STORAGE_BUCKET, VITE_FIREBASE_APP_ID.
+4. Write an initial firestore.rules file and storage.rules file that at minimum block all reads and writes from unauthenticated users â€” do not leave the database fully open, even temporarily, per TRD.md Section 3.
+5. Confirm the project builds and runs locally with no errors before doing anything else.
+6. Push the initial scaffold to GitHub.
+
+After pushing: check whether Vercel is already connected to this repository. If not, tell me the exact steps I need to take on vercel.com to connect it (you cannot do this part yourself), and wait for my confirmation that it is connected before considering this phase complete.
+
+Self-check before you tell me this phase is done: does the project build with zero errors? Does firestore.rules block unauthenticated access? If either answer is no, fix it before reporting completion â€” do not report success on an unverified state.
+
+Finally: update Tracker.md (mark Day 1 complete, move "Next Up" to Days 2-3) and add a dated entry to CHANGELOG.md for what was set up today. Report back to me in Roman Urdu, plain text, per Rules.md.
+Prompt 2 â€” 
+Days 2â€“3 â€” Auth, Navigation, Tutor Discovery
+Begin Days 2-3 (Auth, Navigation, Tutor Discovery) of ImplementationPlan.md.
+
+Build, in this order:
+1. The shared Header component (Design.md Section 4) and Footer component (Section 5) â€” these will be used on every page, so get them right once rather than duplicating markup later.
+2. /signup â€” with the two accessible role tabs (Parent/Student, Tutor) per AppFlow.md Flow 1 and Schema.md's users collection.
+3. /verify-phone â€” per AppFlow.md Flow 2, including the 60-second resend cooldown and the phoneVerified gate.
+4. /login, /forgot-password, /reset-password â€” per AppFlow.md Flow 3 and the security behaviors already specified in TRD.md (5-attempt lockout, identical response for existing/non-existing emails).
+5. /find-tutors â€” filters (Subject, City, Verified-only) and the empty state, per AppFlow.md.
+
+For each page: implement it, then review your own work against Design.md Section 7 (accessibility) before moving to the next page â€” every form field needs a label, every interactive element needs an accessible name, focus must move sensibly. Treat this self-review as a required step, not an optional polish pass.
+
+If anything in Schema.md's users collection seems insufficient for what you're building, stop and ask me rather than inventing a new field.
+
+When all five items above are working end-to-end (a user can sign up, verify, log in, and see Find Tutors), push to GitHub, update Tracker.md and CHANGELOG.md, and report back in Roman Urdu, plain text.
+Prompt 3 â€” 
+Days 4â€“5 â€” Tutor Profiles, Booking, Escrow Stepper
+Begin Days 4-5 (Tutor Profiles, Booking, Escrow Stepper) of ImplementationPlan.md.
+
+Build, in this order:
+1. /tutor/[id] â€” the Tutor Profile page, per AppFlow.md and Schema.md's tutor_profiles collection.
+2. /booking/[tutorId] â€” date/time selection, the simulated payment method choice (Card/EasyPaisa/JazzCash â€” simulated only, per PRD.md Section 5, do not attempt live payment gateway calls), and the escrow status stepper UI.
+3. The createEscrowTransaction Cloud Function per TRD.md Section 4 â€” this must create a Firestore escrow_transactions record with status "held" when a booking is confirmed.
+
+This is a good moment to apply a generate-then-evaluate loop rather than writing everything in one pass: after you implement the escrow Cloud Function, deliberately try to break it â€” what happens if it's called twice for the same booking (idempotency, per Rules.md Hard Rule 5)? What happens if a client tries to call it directly instead of through the intended flow? Fix what you find before moving on, and tell me what you tested.
+
+Reminder from Rules.md Hard Rule 3: escrow_transactions must never be writable directly by a client â€” only by this Cloud Function.
+
+When a parent can book a session and see it appear on their dashboard with status "Payment Held," push to GitHub, update Tracker.md and CHANGELOG.md, and report back in Roman Urdu, plain text.
+Prompt 4 â€” 
+Days 6â€“7 â€” Video Call and Chat (Highest Risk)
+Begin Days 6-7 (Video Call and Chat) of ImplementationPlan.md. This is the highest-risk phase in the whole build â€” read TRD.md Section 6 (Connectivity Resilience) again before starting.
+
+Build, in this order:
+1. Integrate VideoSDK.live into /session/[id]/call. Before writing the full UI, first write a small isolated test to confirm VideoSDK.live's free tier actually supports screen sharing and adaptive bitrate. Do not assume either â€” TRD.md explicitly flags this as something to verify, not assume.
+2. Build the full call controls: Mute/Unmute, Camera On/Off, Speaker toggle, Screen Share, Chat, Raise Hand, End Call â€” per Design.md Section 6 (icon plus visible text, dynamic aria-labels).
+3. Implement the audio-only fallback, the "Connection unstable" message, and the "Rejoin Call" action per TRD.md Section 6. If you have a way to simulate a throttled/degraded connection in your testing environment, use it â€” do not test only on a fast connection and assume it will hold up.
+4. Build /messages with real-time Firestore listeners, and the scanChatMessage Cloud Function (TRD.md Section 5) that blocks phone-number patterns and phrases like "WhatsApp" before a message is saved.
+
+Express uncertainty rather than guessing here: if VideoSDK.live's free tier does not support screen share or adaptive bitrate the way TRD.md assumes, stop and tell me immediately rather than silently shipping a call experience without them â€” this is a scope-affecting finding, not a minor detail.
+
+When two test accounts can complete a video call with working screen share, and a test message containing a phone number is correctly blocked, push to GitHub, update Tracker.md and CHANGELOG.md, and report back in Roman Urdu, plain text.
+Prompt 5 â€” 
+Days 8â€“9 â€” Tutor Verification and Dashboards
+Begin Days 8-9 (Tutor Verification and Dashboards) of ImplementationPlan.md.
+
+Build, in this order:
+1. /tutor-dashboard/verification â€” document upload (CNIC front/back, degree â€” images only, per TRD.md Section 7: 5MB max, randomized filenames, direct-to-Storage upload).
+2. The full Parent Dashboard and Tutor Dashboard per AppFlow.md and Schema.md.
+3. Review submission and dispute filing flows.
+4. The reschedule-notification-sync fix and no-show handling exactly as specified in TRD.md Section 4 and Rules.md Hard Rule 6: the no-show check must read the booking's current confirmed scheduledAt time, never an original time. Write a specific test for this: reschedule a booking, then confirm the no-show timer follows the new time, not the old one. Show me you tested this, don't just assert that it works.
+
+Remember: no /admin route is being built in this window (Rules.md Anti-Patterns). Verification approval and dispute resolution happen via direct Firebase Console access for this build â€” do not build an admin UI even if it seems like the natural next step.
+
+When the full loop works end-to-end (signup through review/dispute), push to GitHub, update Tracker.md and CHANGELOG.md, and report back in Roman Urdu, plain text.
+Prompt 6 â€” 
+Day 10 â€” Accessibility Pass
+Begin Day 10 (Accessibility Pass) of ImplementationPlan.md.
+
+This phase is a structured review loop, not new feature work:
+1. Go through every page built so far against the full checklist in Design.md Section 7. For each item (alt text, labels, keyboard navigation, focus indicators, skip-to-content, contrast, aria-live announcements, touch targets, reduced-motion, loading/error states) â€” check it explicitly and fix what fails. Do not sample a few pages; check all of them.
+2. Pay particular attention to the aria-live announcements for escrow-status changes and video-call events (join/leave/mute) â€” these were specifically called out as needing verification, not just implementation.
+3. List, in plain text, every issue you found and every fix you made â€” I need this list to relay to my team for their own manual testing with a screen reader afterward, since Design.md requires real-device testing (TalkBack, NVDA) that you cannot perform yourself. Be explicit about which checks you were able to verify programmatically versus which ones still need a human with an actual screen reader to confirm.
+
+When this pass is complete, push to GitHub, update Tracker.md and CHANGELOG.md, and report back in Roman Urdu, plain text â€” including the issue list from step 3 so I can pass it to Muzaffar for manual testing.
+Prompt 7 â€” 
+Day 11 â€” Final Testing and Presentation Prep
+Begin Day 11 (Final Testing and Presentation Prep) of ImplementationPlan.md â€” the last build day before the September 12 presentation.
+
+1. Run a full end-to-end pass yourself: signup, verify, login, find a tutor, book, video call with screen share, confirm session, review, and the dispute path. Note anything that breaks.
+2. Confirm every loading state, error state, and empty state (per PRD.md and Design.md) is actually present and not just a blank screen while something fails silently.
+3. Fix any issues found in step 1 and 2. If a fix is risky or large this close to the deadline, tell me the trade-off rather than deciding alone â€” I would rather know about a risk than discover it during the presentation.
+4. Do a final review of Rules.md's Hard Rules list (1-13) against the finished app â€” confirm each one still holds, since earlier fixes can sometimes accidentally undo an earlier safeguard.
+
+Push the final state to GitHub, do a final update of Tracker.md and CHANGELOG.md summarizing the full 11-day build, and report back to me in Roman Urdu, plain text, with a short honest assessment of what is fully working versus what is rough, so I know exactly what I'm presenting on September 12.
+
+Note: Prompt 1 now includes the repository URL https://github.com/attarehmanfsd-cpu/Tutor-trust.pk â€” a hyphen was added between "Tutor" and "trust.pk" since GitHub URLs cannot contain a literal space. If your actual repository name is different, correct this line before sending the prompt to Antigravity.

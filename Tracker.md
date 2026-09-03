@@ -5,13 +5,14 @@
 
 ## Completed
 - [x] Day 1 (Sep 1) — Setup
+- [x] Days 2–3 (Sep 2–3) — Auth, Navigation, Tutor Discovery
 
 ## In Progress
-- [ ] Days 2–3 (Sep 2–3) — Auth, Navigation, Tutor Discovery
+- [ ] Days 4–5 (Sep 4–5) — Tutor Profiles, Booking, Escrow Stepper
 
 ## Pending (in build order — see ImplementationPlan.md)
 - [x] Day 1 (Sep 1) — Setup
-- [ ] Days 2–3 (Sep 2–3) — Auth, Navigation, Tutor Discovery
+- [x] Days 2–3 (Sep 2–3) — Auth, Navigation, Tutor Discovery
 - [ ] Days 4–5 (Sep 4–5) — Tutor Profiles, Booking, Escrow Stepper
 - [ ] Days 6–7 (Sep 6–7) — Video Call and Chat (highest risk — connectivity resilience)
 - [ ] Days 8–9 (Sep 8–9) — Tutor Verification and Dashboards
@@ -22,7 +23,7 @@
 ## Next Up (single most important next action)
 > Set this to ONE item at a time — Antigravity should read this first every session and update it before ending the session.
 
-Currently: **Days 2–3 (Sep 2–3) — Auth, Navigation, Tutor Discovery**
+Currently: **Days 4–5 (Sep 4–5) — Tutor Profiles, Booking, Escrow Stepper**
 
 ## Known Issues / Blockers
 - (log here as they come up — e.g. "VideoSDK.live screen-share needs confirming on free tier")

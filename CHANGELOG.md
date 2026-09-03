@@ -16,6 +16,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) — 
 
 ---
 
+## [Day 3] - 2026-09-03
+
+### Added
+- Created shared `Header` and `Footer` components with accessible navigation.
+- Built `/signup`, `/login`, `/verify-phone`, `/forgot-password`, and `/reset-password` authentication pages with Firebase integration.
+- Added `/find-tutors` page with `TutorCard` component, sidebar filters, and empty state.
+- Integrated all pages into `App.tsx` routing.
+
 ## [Day 1] - 2026-09-01
 
 ### Added
